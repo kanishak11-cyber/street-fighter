@@ -204,13 +204,13 @@ echo "${bold}STEP 2: Creating Python 3.9 virtual environment${normal}"
 echo "==================================================="
 
 # Create virtual environment if it doesn't exist
-if [ ! -d "$PROJECT_DIR/venv" ]; then
+if [ ! -d "$PROJECT_DIR/.venv" ]; then
     echo "Creating virtual environment with Python 3.9..."
-    $PYTHON_CMD -m venv venv
+    $PYTHON_CMD -m venv .venv
     if [ $? -ne 0 ]; then
         echo "${red}${bold}ERROR: Failed to create virtual environment.${normal}"
         echo "Trying to create with system packages..."
-        $PYTHON_CMD -m venv venv --system-site-packages
+        $PYTHON_CMD -m venv .venv --system-site-packages
         if [ $? -ne 0 ]; then
             echo "${red}${bold}ERROR: Virtual environment creation failed. Cannot continue.${normal}"
             exit 1
@@ -220,13 +220,13 @@ else
     echo "Virtual environment already exists."
     
     # Check if it was created with Python 3.9
-    if [ -f "$PROJECT_DIR/venv/pyvenv.cfg" ]; then
+    if [ -f "$PROJECT_DIR/.venv/pyvenv.cfg" ]; then
         VENV_PYTHON_VERSION=$(grep "version" "$PROJECT_DIR/venv/pyvenv.cfg" | cut -d "=" -f 2 | tr -d " ")
         if [[ ! "$VENV_PYTHON_VERSION" =~ ^3\.9\. ]]; then
             echo "${yellow}${bold}WARNING: Existing virtual environment uses Python $VENV_PYTHON_VERSION, not 3.9.${normal}"
             echo "Recreating virtual environment with Python 3.9..."
-            rm -rf "$PROJECT_DIR/venv"
-            $PYTHON_CMD -m venv venv
+            rm -rf "$PROJECT_DIR/.venv"
+            $PYTHON_CMD -m venv .venv
             if [ $? -ne 0 ]; then
                 echo "${red}${bold}ERROR: Failed to recreate virtual environment with Python 3.9.${normal}"
                 exit 1
@@ -237,7 +237,7 @@ fi
 
 # Activate virtual environment
 echo "Activating virtual environment..."
-source venv/bin/activate
+source .venv/bin/activate
 if [ $? -ne 0 ]; then
     echo "${red}${bold}ERROR: Failed to activate virtual environment.${normal}"
     exit 1
