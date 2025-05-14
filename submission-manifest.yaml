@@ -1,0 +1,8 @@
+version: v2
+name: sfiii-agent
+image: diambra-sfiii-agent:v2
+dockerfile: ./Dockerfile
+files:
+  - agent.py
+  - 1022.zip
+  - requirements.txt
